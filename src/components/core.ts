@@ -5,6 +5,7 @@ import * as _ from './utils';
 import { LogLevels } from './utils';
 import { EditorConfig, OutputData, SanitizerConfig } from '../../types';
 import { EditorModules } from '../types-internal/editor-modules';
+import BlockManager from './modules/blockManager';
 import I18n from './i18n';
 
 /**
@@ -178,6 +179,7 @@ export default class Core {
     const initialBlockData = {
       type: this.config.initialBlock,
       data: {},
+      id: BlockManager.generateUuidv4(),
     };
 
     this.config.placeholder = this.config.placeholder || false;

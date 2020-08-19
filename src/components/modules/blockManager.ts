@@ -142,6 +142,15 @@ export default class BlockManager extends Module {
     return this.blocks.every((block) => block.isEmpty);
   }
 
+  public static generateUuidv4(): string {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+      // tslint:disable: no-bitwise
+      // tslint:disable-next-line: triple-equals
+      const r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+      return v.toString(16);
+    });
+  }
+
   /**
    * Index of current working block
    *
@@ -213,12 +222,14 @@ export default class BlockManager extends Module {
   public composeBlock({ tool, data = {} }: {tool: string; data?: BlockToolData}): Block {
     const settings = this.Editor.Tools.getToolSettings(tool);
     const Tool = this.Editor.Tools.available[tool] as BlockToolConstructable;
+    const id = BlockManager.generateUuidv4();
     const block = new Block({
       name: tool,
       data,
       Tool,
       settings,
       api: this.Editor.API,
+      id,
     });
 
     this.bindEvents(block);

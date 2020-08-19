@@ -51,6 +51,11 @@ interface BlockConstructorOptions {
    * Editor's API methods
    */
   api: ApiModule;
+
+  /**
+   * Unique id
+   */
+  id: string;
 }
 
 /**
@@ -133,6 +138,11 @@ export default class Block {
   public tunes: BlockTune[];
 
   /**
+   * unique identifier
+   */
+  public id: string;
+
+  /**
    * Tool's user configuration
    */
   public readonly config: ToolConfig;
@@ -199,6 +209,7 @@ export default class Block {
    * @param {BlockToolConstructable} options.Tool — Tool's class
    * @param {ToolSettings} options.settings - default tool's config
    * @param {ApiModule} options.api - Editor API module for pass it to the Block Tunes
+   * @param {string} options.id - A unique id of block
    */
   constructor({
     name,
@@ -206,12 +217,14 @@ export default class Block {
     Tool,
     settings,
     api,
+    id,
   }: BlockConstructorOptions) {
     this.name = name;
     this.class = Tool;
     this.settings = settings;
     this.config = settings.config || {};
     this.api = api;
+    this.id = id;
     this.blockAPI = new BlockAPI(this);
 
     this.mutationObserver = new MutationObserver(this.didMutated);

@@ -12,6 +12,10 @@ export interface OutputBlockData {
    * Saved Block data
    */
   data: BlockToolData;
+  /**
+   * Unique id
+   */
+  id: string;
 }
 
 export interface OutputData {

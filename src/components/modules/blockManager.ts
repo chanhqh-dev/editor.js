@@ -219,10 +219,9 @@ export default class BlockManager extends Module {
    *
    * @returns {Block}
    */
-  public composeBlock({ tool, data = {} }: {tool: string; data?: BlockToolData}): Block {
+  public composeBlock({ tool, data = {}, id = BlockManager.generateUuidv4() }: { tool: string; data?: BlockToolData; id?: string }): Block {
     const settings = this.Editor.Tools.getToolSettings(tool);
     const Tool = this.Editor.Tools.available[tool] as BlockToolConstructable;
-    const id = BlockManager.generateUuidv4();
     const block = new Block({
       name: tool,
       data,
@@ -255,12 +254,14 @@ export default class BlockManager extends Module {
     index,
     needToFocus = true,
     replace = false,
+    id = BlockManager.generateUuidv4(),
   }: {
     tool?: string;
     data?: BlockToolData;
     index?: number;
     needToFocus?: boolean;
     replace?: boolean;
+    id?: string;
   } = {}): Block {
     let newIndex = index;
 
@@ -271,6 +272,7 @@ export default class BlockManager extends Module {
     const block = this.composeBlock({
       tool,
       data,
+      id
     });
 
     this._blocks.insert(newIndex, block, replace);
@@ -519,8 +521,8 @@ export default class BlockManager extends Module {
     }
 
     const nodes = this._blocks.nodes,
-        firstLevelBlock = element.closest(`.${Block.CSS.wrapper}`),
-        index = nodes.indexOf(firstLevelBlock as HTMLElement);
+      firstLevelBlock = element.closest(`.${Block.CSS.wrapper}`),
+      index = nodes.indexOf(firstLevelBlock as HTMLElement);
 
     if (index >= 0) {
       return this._blocks[index];
